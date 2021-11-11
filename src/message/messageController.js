@@ -79,14 +79,14 @@ class messageController {
       .getMessageList(req, res)
       .then((data) => {
 // TODO: Uncomment after confirmation
-        // const decryptedData = data.map(value => {
-        //   let cloneValue = {...value};
-        //   cloneValue.text = Helper.dencryptMessage(cloneValue.text);
-        //   return clonedValue
-        // })
+        const decryptedData = data.map(value => {
+          let cloneValue = {...value};
+          cloneValue.text = Helper.dencryptMessage(cloneValue.text);
+          return clonedValue
+        })
 
-        // return responseHandler.send(HttpStatusCode.success.SUCCESS, res, decryptedData);
-        return responseHandler.send(HttpStatusCode.success.SUCCESS, res, data);
+        return responseHandler.send(HttpStatusCode.success.SUCCESS, res, decryptedData);
+        // return responseHandler.send(HttpStatusCode.success.SUCCESS, res, data);
       })
       .catch((err) => {
         return responseHandler.send(
