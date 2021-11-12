@@ -73,11 +73,12 @@ class messageService {
           type: QueryTypes.SELECT,
         }
       );
-      const msg = [];
-      temp.map((arg) => {
-        return msg.push({
+
+      const msg = temp.map((arg) => {
+
+        return ({
           _id: arg.id,
-          text: Helper.dencryptMessage(arg.text),
+          text: Helper.dencryptMessage(arg.text) || '',
           createdAt: arg.createdAt,
           user: {
             _id: parseInt(arg.sender),
@@ -86,6 +87,7 @@ class messageService {
       });
       return msg;
     } catch (error) {
+      console.log(error)
       throw error;
     }
   }
