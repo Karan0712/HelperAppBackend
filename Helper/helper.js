@@ -13,7 +13,7 @@ const Helper = {
 
   /* function for compare password with database when user give password at the time of registration */
   comparePassword(hashPassword,password){
-    return true;
+    return bcrypt.compareSync(password,hashPassword);
   },
 
   encryptMessage(message) {
