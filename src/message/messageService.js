@@ -1,6 +1,6 @@
 const db = require("../../model");
 const Messages = db.messages;
-// const Helper = require("../../Helper/helper");
+const Helper = require("../../Helper/helper");
 const { QueryTypes } = require("sequelize");
 const { sequelize } = require("../../model");
 // const Op = Sequelize.Op;
@@ -41,7 +41,7 @@ class messageService {
       const message = {
         user_one: req.body.user_one,
         user_two: req.body.user_two,
-        messages: req.body.messages,
+        messages: Helper.encryptMessage(req.body.messages),
         sender: req.body.sender,
       };
       return await Messages.create(message);
@@ -73,11 +73,12 @@ class messageService {
           type: QueryTypes.SELECT,
         }
       );
-      const msg = [];
-      temp.map((arg) => {
-        return msg.push({
+
+      const msg = temp.map((arg) => {
+
+        return ({
           _id: arg.id,
-          text: arg.text,
+          text: Helper.dencryptMessage(arg.text) || '',
           createdAt: arg.createdAt,
           user: {
             _id: parseInt(arg.sender),
@@ -86,6 +87,7 @@ class messageService {
       });
       return msg;
     } catch (error) {
+      console.log(error)
       throw error;
     }
   }
