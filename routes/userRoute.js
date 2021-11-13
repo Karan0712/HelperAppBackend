@@ -15,7 +15,7 @@ router.post("/login", login);
 
 router.post("/reuse", checkEmailReuse);
 
-router.post("/detailsById/:id", getUserBasedOnId);
+router.get("/detailsById/:id", getUserBasedOnId);
 
 router.post("/all", getAllUsers);
 

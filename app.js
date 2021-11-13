@@ -1,4 +1,5 @@
 const express = require("express");
+var morgan = require('morgan')
 const userRouter = require("./routes/userRoute");
 const commonRouter = require("./routes/commonRoute");
 const postRouter = require("./routes/postRoute");
@@ -17,6 +18,7 @@ const db = require("./model");
 // });
 
 // db.sequelize.sync({ alter: true });
+app.use(morgan('combined'))
 
 app.get("/", (req, res) => {
   res.json({ info: "Node.js, Express, and Postgres API test" });

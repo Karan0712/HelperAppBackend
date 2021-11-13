@@ -13,7 +13,7 @@ const {
   getStateByCode,
 } = require("../src/common/commonService");
 
-router.post("/countryStates/:countryCode", getAllStates);
+router.get("/countryStates/:countryCode", getAllStates);
 router.post("/cities", getAllCities);
 router.get("/allCountries", getAllCountries);
 router.post("/countryByCode", getCountryCode);
