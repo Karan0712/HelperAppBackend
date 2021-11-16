@@ -14,5 +14,5 @@ console.log(process.env,"envs")
         rejectUnauthorized: false,
     },
 });
-}
+
 module.exports = pool;
