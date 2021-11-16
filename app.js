@@ -10,8 +10,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 const db = require("./model");
+const dbConfig = require("./db/dbQuery");
+console.log(dbConfig)
 
-// db.sequelize.sync();
+db.sequelize.sync();
 
 // db.sequelize.sync({ force: true }).then(() => {
 //   console.log("Drop and re-sync db.");
@@ -26,6 +28,7 @@ app.get("/", (req, res) => {
 
 app.get("/api/healthcheck", (req, res) => {
   res.status(200).json({
+    process: process.env,
     BUILD_NUMBER: process.env.BUILD_NUMBER || "SNAPSHOT",
     APP_ENV: process.env.APP_ENV || "LOCAL",
   });
