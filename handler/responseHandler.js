@@ -1,4 +1,4 @@
-const HTTPStatusCode = require('../constants/httpStatusCode');
+const HTTPStatusCode = require('../constants/httpstatuscode');
 const _ = require('lodash');
 
 const apiResponseHandler = {
