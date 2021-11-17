@@ -11,7 +11,15 @@ app.use(express.urlencoded({ extended: false }));
 
 const db = require("./model");
 const dbConfig = require("./db/dbQuery");
-console.log(dbConfig)
+
+db.sequelize
+  .authenticate()
+  .then(() => {
+    console.log('Connection has been established successfully.');
+  })
+  .catch(err => {
+    console.error('Unable to connect to the database:', err);
+  });
 
 db.sequelize.sync();
 
