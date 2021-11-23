@@ -30,6 +30,7 @@ db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
 db.users = require("./userModel")(sequelize, Sequelize);
+db.reports = require("./reportModel")(sequelize, Sequelize);
 
 db.posts = require("./postModel")(sequelize, Sequelize);
 db.messages = require("./messageModel")(sequelize, Sequelize);

@@ -4,6 +4,7 @@ const userRouter = require("./routes/userRoute");
 const commonRouter = require("./routes/commonRoute");
 const postRouter = require("./routes/postRoute");
 const messageRouter = require("./routes/messageRoute");
+const reportRouter = require("./routes/reportRoute");
 const app = express();
 const port = process.env.PORT || 5000;
 app.use(express.json());
@@ -42,6 +43,7 @@ app.get("/api/healthcheck", (req, res) => {
   });
 });
 
+app.use("/api", reportRouter);
 app.use("/api", userRouter);
 app.use("/api", commonRouter);
 app.use("/api", postRouter);
