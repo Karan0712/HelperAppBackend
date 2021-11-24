@@ -74,7 +74,6 @@ class userService {
 
   async getDetailsById(req, res) {
     const userDetail = await this.getUserById(req.params.id);
-
     const token = {
       userId: userDetail.dataValues.id,
       userName: userDetail.dataValues.name,
@@ -123,16 +122,16 @@ class userService {
   }
   async sortUsers(req, res) {
     try {
-      let job = req.body.profession;
+      let placeSG = req.body.areaSG;
       let hcountry = req.body.homeCountry;
       let hstate = req.body.homeState;
       let hcity = req.body.homeCity;
       let id = req.body.id;
-      if (job) {
+      if (placeSG) {
         if (hcity) {
           return await Users.findAll({
             where: {
-              profession: job,
+              currentCity: placeSG,
               city: hcity,
               state: hstate,
               country: hcountry,
@@ -142,7 +141,7 @@ class userService {
         } else if (hstate) {
           return await Users.findAll({
             where: {
-              profession: job,
+              currentCity: placeSG,
               state: hstate,
               country: hcountry,
               id: { [Op.ne]: req.body.id },
@@ -151,7 +150,7 @@ class userService {
         } else if (hcountry) {
           return await Users.findAll({
             where: {
-              profession: job,
+              currentCity: placeSG,
               country: hcountry,
               id: { [Op.ne]: req.body.id },
             },
@@ -159,7 +158,7 @@ class userService {
         } else {
           return await Users.findAll({
             where: {
-              profession: job,
+              currentCity: placeSG,
               id: { [Op.ne]: req.body.id },
             },
           });
