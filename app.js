@@ -10,8 +10,6 @@ const app = express();
 const port = process.env.PORT || 5000;
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-console.log("process.env", process.env);
-console.log(typeof process.env.PG_PASSWORD);
 const db = require("./model");
 const dbConfig = require("./db/dbQuery");
 
@@ -24,11 +22,11 @@ db.sequelize
     console.error("Unable to connect to the database:", err);
   });
 
-// db.sequelize.sync();
+db.sequelize.sync();
 
-db.sequelize.sync({ force: true }).then(() => {
-  console.log("Drop and re-sync db.");
-});
+// db.sequelize.sync({ force: true }).then(() => {
+//   console.log("Drop and re-sync db.");
+// });
 
 // db.sequelize.sync({ alter: true });
 app.use(morgan("combined"));

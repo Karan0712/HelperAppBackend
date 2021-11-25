@@ -1,5 +1,4 @@
 const Pool = require("pg").Pool;
-console.log(typeof process.env.PG_PASSWORD);
 
 const isProduction = process.env.NODE_ENV === "production";
 
