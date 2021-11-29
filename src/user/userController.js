@@ -1,3 +1,4 @@
+const jwt = require('jsonwebtoken');
 const userService = require("./userService");
 const responseHandler = require("../../handler/responseHandler");
 const HttpStatusCode = require("../../constants/httpstatuscode");
@@ -7,10 +8,18 @@ class userController {
   createUser(req, res) {
     userService
       .createUser(req, res)
-      .then((data) => {
+      .then((user) => {
+        const token = jwt.sign({ id: user.dataValues.id }, process.env.JWT_SECRET);
+        const data = {
+          userId: user.dataValues.id,
+          userName: user.dataValues.name,
+          userEmail: user.dataValues.email,
+          token: token
+        };
         return responseHandler.send(HttpStatusCode.success.SUCCESS, res, data);
       })
       .catch((err) => {
+        console.log(err)
         return responseHandler.send(
           HttpStatusCode.error.UNPROCESSABLE_ENTITY,
           res,
@@ -171,7 +180,8 @@ class userController {
         if (data.rowCount === 0) {
           throw new Error("No record found!");
         }
-        return responseHandler.send(HttpStatusCode.success.SUCCESS, res, data);
+        const token = jwt.sign({ id: data.userId }, process.env.JWT_SECRET);
+        return responseHandler.send(HttpStatusCode.success.SUCCESS, res, {...data, token});
       })
       .catch((err) => {
         return responseHandler.send(

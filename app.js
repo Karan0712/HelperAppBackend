@@ -1,38 +1,44 @@
 require("dotenv").config();
-const express = require("express");
 var morgan = require("morgan");
+const express = require("express");
+const jwt = require('jsonwebtoken');
 const userRouter = require("./routes/userRoute");
 const commonRouter = require("./routes/commonRoute");
 const postRouter = require("./routes/postRoute");
 const messageRouter = require("./routes/messageRoute");
 const reportRouter = require("./routes/reportRoute");
-const app = express();
-const port = process.env.PORT || 5000;
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+const authenticateToken = require("./routes/middleware/auth");
 const db = require("./model");
 const dbConfig = require("./db/dbQuery");
 
+const port = process.env.PORT || 5000;
+const app = express();
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+
 db.sequelize
-  .authenticate()
-  .then(() => {
-    console.log("Connection has been established successfully.");
-  })
-  .catch((err) => {
-    console.error("Unable to connect to the database:", err);
-  });
+.authenticate()
+.then(() => {
+  console.log("Connection has been established successfully.");
+})
+.catch((err) => {
+  console.error("Unable to connect to the database:", err);
+});
 
 db.sequelize.sync();
 
 // db.sequelize.sync({ force: true }).then(() => {
-//   console.log("Drop and re-sync db.");
-// });
+  //   console.log("Drop and re-sync db.");
+  // });
 
-// db.sequelize.sync({ alter: true });
-app.use(morgan("combined"));
+  // db.sequelize.sync({ alter: true });
+  app.use(morgan("combined"));
+  app.set('views', __dirname + '/views');
+  app.set('view engine', 'ejs')
+  app.set('view options', { layout: false });
 
-app.get("/", (req, res) => {
-  res.json({ info: "Node.js, Express, and Postgres API test" });
+  app.get("/", (req, res) => {
+    res.json({ info: "Node.js, Express, and Postgres API test" });
 });
 
 app.get("/api/healthcheck", (req, res) => {
@@ -46,8 +52,11 @@ app.get("/api/healthcheck", (req, res) => {
 app.use("/api", reportRouter);
 app.use("/api", userRouter);
 app.use("/api", commonRouter);
-app.use("/api", postRouter);
-app.use("/api", messageRouter);
+app.use("/api",authenticateToken, postRouter);
+app.use("/api",authenticateToken, messageRouter);
+app.get('/privacy_policies', function (req, res) {
+  res.render('privacy')
+})
 app.set("port", port);
 app.listen(port, () => {
   console.log(`App is running on port ${port}.`);
