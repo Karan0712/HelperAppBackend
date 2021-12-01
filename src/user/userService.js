@@ -14,7 +14,7 @@ class userService {
       const user = {
         name: req.body.name,
         username: req.body.username,
-        email: req.body.email,
+        email: req.body.email.toLowerCase(),
         profession: req.body.profession,
         country: req.body.country,
         state: req.body.state,
@@ -95,13 +95,13 @@ class userService {
   /* fetch user details from users table based on email */
   async getUserByEmail(email) {
     try {
-      return await Users.findOne({ where: { email: email } });
+      return await Users.findOne({ where: { email: email.toLowerCase() } });
     } catch (error) {}
   }
 
   async checkEmail(req, res) {
     try {
-      const userDetail = await this.getUserByEmail(req.body.email);
+      const userDetail = await this.getUserByEmail(req.body.email.toLowerCase());
       /* condition for email exist or not in users table */
       if (userDetail) {
         return res.send({
@@ -216,7 +216,7 @@ class userService {
         });
       }
 
-      const userDetail = await this.getUserByEmail(email);
+      const userDetail = await this.getUserByEmail(email.toLowerCase());
 
       /* condition for email exist or not in users table */
       if (!userDetail) {
